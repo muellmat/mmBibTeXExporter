@@ -1,0 +1,19 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {cancel = id; proceed = id; }; 
+            CLASS = ORFLocater; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {theProgBar = id; theSheet = id; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = mmBibTeXExporter; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {accessoryWindow = NSWindow; delegate = id; exportLimitPopUp = NSPopUpButton; }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}
