@@ -374,7 +374,7 @@
 		
 		if ([paper objectForKey:@"pages"]) {
 			NSMutableString *pages = [NSMutableString stringWithString:[paper objectForKey:@"pages"]];
-			NSRange r = [pages rangeOfString:@"-" optionsNSBackwardsSearch];
+			NSRange r = [pages rangeOfString:@"-" options:NSBackwardsSearch];
 			if (r.location != NSNotFound) {
 				[pages replaceCharactersInRange:r withString:@"--"];
 			}
