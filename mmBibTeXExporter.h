@@ -9,11 +9,9 @@
 //  DO NOT REDISTRIBUTE WITHOUT ALL THE INCLUDED FILES
 
 #import <Cocoa/Cocoa.h>
-
 #import "PapersExporterPluginProtocol.h"
 
-@interface mmBibTeXExporter : NSObject <PapersExporterPluginProtocol>
-{
+@interface mmBibTeXExporter : NSObject <PapersExporterPluginProtocol> {
 	IBOutlet NSWindow *accessoryWindow;
 	IBOutlet NSPopUpButton *exportLimitPopUp;
 	
@@ -26,23 +24,20 @@
     NSError *exportError;
 }
 
-- (id)delegate;
-- (void)setDelegate:(id)newDelegate;
+-(id)delegate;
+-(void)setDelegate:(id)newDelegate;
 
-- (NSNumber *)itemsToExport;
-- (void)setItemsToExport:(NSNumber *)newItemsToExport;
+-(NSNumber*)itemsToExport;
+-(void)setItemsToExport:(NSNumber*)newItemsToExport;
 
-- (NSNumber *)exportedItems;
-- (void)setExportedItems:(NSNumber *)newExportedItems;
-- (void)incrementExportedItemsWith: (int)value;
+-(NSNumber*)exportedItems;
+-(void)setExportedItems:(NSNumber*)newExportedItems;
+-(void)incrementExportedItemsWith:(int)value;
 
-- (NSString *)statusString;
-- (void)setStatusString:(NSString *)newStatusString;
+-(NSString*)statusString;
+-(void)setStatusString:(NSString*)newStatusString;
 
-- (NSError *)exportError;
-- (void)setExportError:(NSError *)newExportError;
-
-
-
+-(NSError*)exportError;
+-(void)setExportError:(NSError*)newExportError;
 
 @end
