@@ -398,11 +398,26 @@
 		
 		NSDate *pubdate = [paper objectForKey:@"publishedDate"];
 		if (pubdate) {
-			NSArray *monthArray = [NSArray arrayWithObjects:@"Jan", @"Feb", @"Mar", @"Apr", @"May", @"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec", nil];
-			NSDictionary *localeDictionary = [NSDictionary dictionaryWithObject:monthArray forKey:NSShortMonthNameArray];
-			[unfilteredString appendFormat:@"month = {%@},\n", [pubdate descriptionWithCalendarFormat:@"%b" 
-																							 timeZone:[NSTimeZone defaultTimeZone] 
-																							   locale:localeDictionary]];
+			// correct month abbreviations, see "Q13: Should I use words or 
+			// numerals for the month, edition, etc., fields, and why?"
+			// http://www.tex.ac.uk/ctan/biblio/bibtex/contrib/doc/btxFAQ.pdf
+			
+			// before:
+			// NSArray *monthArray = [NSArray arrayWithObjects:@"Jan", @"Feb", @"Mar", @"Apr", @"May", 
+			//							@"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec", nil];
+			
+			// after:
+			NSArray *monthArray = [NSArray arrayWithObjects:@"jan", @"feb", @"mar", 
+															@"apr", @"may", @"jun", 
+															@"jul", @"aug", @"sep", 
+															@"oct", @"nov", @"dec", nil];
+			
+			NSDictionary *localeDictionary = [NSDictionary dictionaryWithObject:monthArray 
+																		 forKey:NSShortMonthNameArray];
+			[unfilteredString appendFormat:@"month = %@,\n", 
+									[pubdate descriptionWithCalendarFormat:@"%b" 
+																  timeZone:[NSTimeZone defaultTimeZone] 
+																	locale:localeDictionary]];
 		}
 	
 		if ([paper objectForKey:@"language"]) {
@@ -417,7 +432,8 @@
 		NSArray *keywords = [[paper objectForKey:@"keywords"] allObjects];
 		if (keywords && [keywords count] > 0) {
 			[unfilteredString appendString:@"keywords = {"];
-			[unfilteredString appendFormat:@"%@}, \n", [[keywords valueForKey:@"name"] componentsJoinedByString:@", "]];
+			[unfilteredString appendFormat:@"%@}, \n", [[keywords valueForKey:@"name"] 
+														componentsJoinedByString:@", "]];
 		}
 			
 		// filter the results thusfar
@@ -426,16 +442,18 @@
 		// add the other fields we don't have to filter
 		NSDate *importdate = [paper objectForKey:@"importedDate"];
 		if (importdate) {
-			[bibstring appendFormat:@"date-added = {%@},\n", [importdate descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S %z" 
-																							  timeZone:[NSTimeZone defaultTimeZone] 
-																								locale:nil]];
+			[bibstring appendFormat:@"date-added = {%@},\n", 
+									 [importdate descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S %z" 
+																	  timeZone:[NSTimeZone defaultTimeZone] 
+																		locale:nil]];
 		}
 	
 		NSDate *modifieddate = [paper objectForKey: @"modifiedDate"];
 		if (modifieddate) {
-			[bibstring appendFormat:@"date-modified = {%@},\n", [modifieddate descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S %z" 
-																								   timeZone:[NSTimeZone defaultTimeZone] 
-																									 locale:nil]];
+			[bibstring appendFormat:@"date-modified = {%@},\n", 
+									 [modifieddate descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S %z" 
+																		timeZone:[NSTimeZone defaultTimeZone] 
+																		  locale:nil]];
 		}
 
 		if ([paper objectForKey:@"doi"]) {
@@ -451,17 +469,20 @@
 		}
 		
 		if ([paper objectForKey:@"url"]) {
-			[bibstring appendFormat:@"URL = {%@},\n", [[paper objectForKey:@"url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+			[bibstring appendFormat:@"URL = {%@},\n", 
+			 [[paper objectForKey:@"url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 		}
 		
 		if ([paper objectForKey:@"path"]) {
-			[bibstring appendFormat:@"local-url = {file://localhost%@},\n", [[paper objectForKey:@"path"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+			[bibstring appendFormat:@"local-url = {file://localhost%@},\n", 
+			 [[paper objectForKey:@"path"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 		}
 
 		if ([paper objectForKey:@"uri"]) {
 			NSURL *uri = [paper objectForKey:@"uri"];
 			NSURL *link = [[[NSURL alloc] initWithScheme:@"papers" host:[uri host] path:[uri path]] autorelease];
-			[bibstring appendFormat:@"uri = {%@},\n", [[link absoluteString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+			[bibstring appendFormat:@"uri = {%@},\n", 
+			 [[link absoluteString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 		}
 		
 		if ([paper objectForKey:@"timesRead"] && [[paper objectForKey:@"timesRead"] intValue] > 0) {
