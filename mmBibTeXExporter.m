@@ -385,8 +385,15 @@
 			[unfilteredString appendFormat:@"volume = {%@},\n", [paper objectForKey:@"volume"]];
 		}
 		
-		if ([paper objectForKey: @"year"]) {
-			[unfilteredString appendFormat:@"year = {%d},\n", [[paper objectForKey:@"year"] intValue]];
+		if ([paper objectForKey:@"year"]) {
+			// brackets and quotes are optional for numbers, see "2.1.1 An Example File"
+			// http://www.tug.org/pracjourn/2006-4/fenn/fenn.pdf
+			
+			// before:
+			// [unfilteredString appendFormat:@"year = {%d},\n", [[paper objectForKey:@"year"] intValue]];
+			
+			// after:
+			[unfilteredString appendFormat:@"year = %d,\n", [[paper objectForKey:@"year"] intValue]];
 		}
 		
 		NSDate *pubdate = [paper objectForKey:@"publishedDate"];
@@ -431,28 +438,28 @@
 																									 locale:nil]];
 		}
 
-		if ([paper objectForKey: @"doi"]) {
+		if ([paper objectForKey:@"doi"]) {
 			[bibstring appendFormat:@"doi = {%@},\n", [paper objectForKey:@"doi"]];
 		}
 		
-		if ([paper objectForKey: @"pii"]) {
+		if ([paper objectForKey:@"pii"]) {
 			[bibstring appendFormat:@"pii = {%@},\n", [paper objectForKey:@"pii"]];
 		}
 		
-		if ([paper objectForKey: @"pmid"]) {
+		if ([paper objectForKey:@"pmid"]) {
 			[bibstring appendFormat:@"pmid = {%@},\n", [paper objectForKey:@"pmid"]];
 		}
 		
-		if ([paper objectForKey: @"url"]) {
+		if ([paper objectForKey:@"url"]) {
 			[bibstring appendFormat:@"URL = {%@},\n", [[paper objectForKey:@"url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 		}
 		
-		if ([paper objectForKey: @"path"]) {
+		if ([paper objectForKey:@"path"]) {
 			[bibstring appendFormat:@"local-url = {file://localhost%@},\n", [[paper objectForKey:@"path"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 		}
 
-		if ([paper objectForKey: @"uri"]) {
-			NSURL *uri = [paper objectForKey: @"uri"];
+		if ([paper objectForKey:@"uri"]) {
+			NSURL *uri = [paper objectForKey:@"uri"];
 			NSURL *link = [[[NSURL alloc] initWithScheme:@"papers" host:[uri host] path:[uri path]] autorelease];
 			[bibstring appendFormat:@"uri = {%@},\n", [[link absoluteString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 		}
@@ -462,7 +469,14 @@
 		}
 
 		if ([paper objectForKey:@"rating"]) {
-			[bibstring appendFormat:@"rating = {%d},\n", [[paper objectForKey:@"rating"] intValue]];
+			// brackets and quotes are optional for numbers, see "2.1.1 An Example File"
+			// http://www.tug.org/pracjourn/2006-4/fenn/fenn.pdf
+			
+			// before:
+			// [bibstring appendFormat:@"rating = {%d},\n", [[paper objectForKey:@"rating"] intValue]];
+			
+			// after:
+			[bibstring appendFormat:@"rating = %d,\n", [[paper objectForKey:@"rating"] intValue]];
 		}
 		
 		// finish record
