@@ -247,10 +247,12 @@
 	// Create beginning of file
 	NSMutableString *bibstring = [NSMutableString stringWithCapacity:1000000];
 	NSMutableSet *keys = [NSMutableSet setWithCapacity:[paperArray count]];
-
-	[bibstring appendString:@"%% This BibTeX bibliography file in UTF-8 format was created using Papers.\n%% http://mekentosj.com/papers/\n\n"];
+	
+	[bibstring appendString:@"%% This BibTeX bibliography file in UTF-8 format was "];
+	[bibstring appendString:@"created using Papers.\n%% http://mekentosj.com/papers/\n\n"];
     		
 	// Iterate over each paper
+	NSString *citeType;
 	id paper;
 	NSEnumerator *papers = [paperArray objectEnumerator];
 	while (paper = [papers nextObject]) {
@@ -260,11 +262,11 @@
 		}
 		
 		// citation type, by default journal article
-		NSString *citeType = [paper objectForKey:@"category"];
+		citeType = [paper objectForKey:@"category"];
 		if (!citeType) {
 			citeType = @"article";
 			if ([paper objectForKey:@"publicationTypes"]) {
-				NSArray *pubtypes = [[paper objectForKey:@"publicationTypes"] valueForKey: @"name"];
+				NSArray *pubtypes = [[paper objectForKey:@"publicationTypes"] valueForKey:@"name"];
 				if ([pubtypes containsObject:@"Book"]) {
 					citeType = @"book";
 				}
@@ -345,7 +347,14 @@
 				else 
 					[authorArray addObject:lastName];
 			}
-			[unfilteredString appendFormat:@"%@}, \n", [authorArray componentsJoinedByString:@" and "]];
+			
+			if ([authorArray count] == 0 &&
+				([citeType isEqualToString:@"article"] || 
+				 [citeType isEqualToString:@"book"])) {
+				[unfilteredString appendString:@"FIXME}, \n"];
+			} else {
+				[unfilteredString appendFormat:@"%@}, \n", [authorArray componentsJoinedByString:@" and "]];
+			}
 		}
 		
 		// journal 
@@ -354,10 +363,19 @@
 		if (journal) {
 			[unfilteredString appendFormat:@"journal = {%@},\n", 
 			 (abbreviation ? abbreviation : [journal objectForKey:@"name"])];
+		} else { // journal is empty --> FIXME
+			if ([citeType isEqualToString:@"article"]) {
+				[unfilteredString appendString:@"journal = {{FIXME}},\n"];
+			}
+		}
+		
+		// publisher
+		if ([citeType isEqualToString:@"book"]) {
+			[unfilteredString appendString:@"publisher = {{FIXME}},\n"];
 		}
 		
 		// other info
-		if ([paper objectForKey: @"title"]) {
+		if ([paper objectForKey:@"title"]) {
 			// dirty hack to protect captials: add braces
 			// http://mekentosj.com/papers/forum15/viewtopic.php?id=340
 			
@@ -365,14 +383,22 @@
 			// [unfilteredString appendFormat:@"title = {%@},\n", [paper objectForKey:@"title"]];
 			
 			// after:
-			[unfilteredString appendFormat:@"title = {{%@}},\n", [paper objectForKey:@"title"]];
+			// [unfilteredString appendFormat:@"title = {{%@}},\n", [paper objectForKey:@"title"]];
+			
+			if ([@"" isEqualToString:[paper objectForKey:@"title"]] &&
+				([citeType isEqualToString:@"article"] || 
+				 [citeType isEqualToString:@"book"])) {
+				[unfilteredString appendString:@"title = {{FIXME}},\n"];
+			} else {
+				[unfilteredString appendFormat:@"title = {{%@}},\n", [paper objectForKey:@"title"]];
+			}
 		}
 		
-		if ([paper objectForKey: @"abstract"]) {
+		if ([paper objectForKey:@"abstract"]) {
 			[unfilteredString appendFormat:@"abstract = {%@},\n", [paper objectForKey:@"abstract"]];
 		}
 		
-		if ([paper objectForKey: @"affiliation"]) {
+		if ([paper objectForKey:@"affiliation"]) {
 			[unfilteredString appendFormat:@"affiliation = {%@},\n", [paper objectForKey:@"affiliation"]];
 		}
 		
@@ -422,7 +448,15 @@
 			// [unfilteredString appendFormat:@"year = {%d},\n", [[paper objectForKey:@"year"] intValue]];
 			
 			// after:
-			[unfilteredString appendFormat:@"year = %d,\n", [[paper objectForKey:@"year"] intValue]];
+			// [unfilteredString appendFormat:@"year = %d,\n", [[paper objectForKey:@"year"] intValue]];
+			
+			if ([@"" isEqualToString:[paper objectForKey:@"year"]] &&
+				([citeType isEqualToString:@"article"] || 
+				 [citeType isEqualToString:@"book"])) {
+				[unfilteredString appendString:@"year = {{FIXME}},\n"];
+			} else {
+				[unfilteredString appendFormat:@"year = %d,\n", [[paper objectForKey:@"year"] intValue]];
+			}
 		}
 		
 		NSDate *pubdate = [paper objectForKey:@"publishedDate"];
