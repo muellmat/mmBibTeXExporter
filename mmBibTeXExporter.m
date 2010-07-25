@@ -250,9 +250,10 @@
 	
 	[bibstring appendString:@"%% This BibTeX bibliography file in UTF-8 format was "];
 	[bibstring appendString:@"created using Papers.\n%% http://mekentosj.com/papers/\n\n"];
-    		
+	
 	// Iterate over each paper
-	NSString *citeType;
+	NSString *citeType; // needed to add a "FIXME" for empty required fields.
+	// see http://www.andy-roberts.net/misc/latex/sessions/bibtex/bibentries.pdf
 	id paper;
 	NSEnumerator *papers = [paperArray objectEnumerator];
 	while (paper = [papers nextObject]) {
@@ -570,7 +571,8 @@
 		
 	}
 	
-
+	NSLog(@"%@", bibstring);
+	
 	NSError *err = nil;	
 	[bibstring writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:&err];
 
