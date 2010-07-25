@@ -421,19 +421,18 @@
 		}
 		
 		if ([paper objectForKey:@"pages"]) {
+			// if there is no range within the pages entry, then append a "+"
+			
 			NSMutableString *pages = [NSMutableString stringWithString:[paper objectForKey:@"pages"]];
 			NSRange r = [pages rangeOfString:@"-" options:NSBackwardsSearch];
 			if (r.location != NSNotFound) {
 				[pages replaceCharactersInRange:r withString:@"--"];
+				[unfilteredString appendFormat:@"pages = {%@},\n", pages];
+			} else if (![@"" isEqualToString:pages]) {
+				[unfilteredString appendFormat:@"pages = {%@+},\n", pages];
+			} else {
+				[unfilteredString appendString:@"pages = {FIXME},\n"];
 			}
-			
-			// if there is no range within the pages entry, then don't append it
-			
-			// before:
-			// [unfilteredString appendFormat:@"pages = {%@},\n", pages];
-			
-			// after:
-			// [unfilteredString appendString:@"pages = {FIXME},\n"];
 		}
 				
 		if ([paper objectForKey:@"volume"]) {
