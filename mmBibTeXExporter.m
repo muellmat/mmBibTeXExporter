@@ -323,10 +323,24 @@
 				NSString *lastName  = [author objectForKey:@"lastName"];
 				NSString *firstName = [author objectForKey:@"firstName"];
 				NSString *initials  = [author objectForKey:@"initials"];
+				
+				// insert author names like this: author = {Last, First and Last, First and ...}
+				// http://www.kfunigraz.ac.at/~binder/texhelp/bibtx-23.html
+				
+				/* before:
 				if (firstName)
 					[authorArray addObject:[NSString stringWithFormat:@"%@ %@", firstName, lastName]];
-				else if(initials)
+				else if (initials)
 					[authorArray addObject:[NSString stringWithFormat:@"%@ %@", initials, lastName]];
+				else 
+					[authorArray addObject:lastName];
+				*/
+				
+				// after:
+				if (firstName)
+					[authorArray addObject:[NSString stringWithFormat:@"%@, %@", lastName, firstName]];
+				else if (initials)
+					[authorArray addObject:[NSString stringWithFormat:@"%@, %@", lastName, initials]];
 				else 
 					[authorArray addObject:lastName];
 			}
