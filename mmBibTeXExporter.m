@@ -326,6 +326,7 @@
 				
 				// insert author names like this: author = {Last, First and Last, First and ...}
 				// http://www.kfunigraz.ac.at/~binder/texhelp/bibtx-23.html
+				// http://www.tex.ac.uk/ctan/biblio/bibtex/contrib/doc/btxFAQ.pdf
 				
 				/* before:
 				if (firstName)
@@ -357,7 +358,14 @@
 		
 		// other info
 		if ([paper objectForKey: @"title"]) {
-			[unfilteredString appendFormat:@"title = {%@},\n", [paper objectForKey:@"title"]];
+			// dirty hack to protect captials: add braces
+			// http://mekentosj.com/papers/forum15/viewtopic.php?id=340
+			
+			// before:
+			// [unfilteredString appendFormat:@"title = {%@},\n", [paper objectForKey:@"title"]];
+			
+			// after:
+			[unfilteredString appendFormat:@"title = {{%@}},\n", [paper objectForKey:@"title"]];
 		}
 		
 		if ([paper objectForKey: @"abstract"]) {
