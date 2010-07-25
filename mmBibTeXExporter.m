@@ -378,7 +378,14 @@
 			if (r.location != NSNotFound) {
 				[pages replaceCharactersInRange:r withString:@"--"];
 			}
-			[unfilteredString appendFormat:@"pages = {%@},\n", pages];
+			
+			// if there is no range within the pages entry, then don't append it
+			
+			// before:
+			// [unfilteredString appendFormat:@"pages = {%@},\n", pages];
+			
+			// after:
+			// [unfilteredString appendString:@"pages = {FIXME},\n"];
 		}
 				
 		if ([paper objectForKey:@"volume"]) {
