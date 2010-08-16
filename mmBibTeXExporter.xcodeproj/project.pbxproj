@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		396EC7A112076BA200DE068E /* bibtex-format.sh in Resources */ = {isa = PBXBuildFile; fileRef = 396EC7A012076BA200DE068E /* bibtex-format.sh */; };
 		3992588511FAEB13008FC4F9 /* mmBibTeXExporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 3992588311FAEB13008FC4F9 /* mmBibTeXExporter.h */; };
 		3992588611FAEB13008FC4F9 /* mmBibTeXExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3992588411FAEB13008FC4F9 /* mmBibTeXExporter.m */; };
 		849786DF05FB68B20030260A /* Panel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 849786DE05FB68B20030260A /* Panel.nib */; };
@@ -30,6 +31,7 @@
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		08FB77B6FE84183AC02AAC07 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		396EC7A012076BA200DE068E /* bibtex-format.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "bibtex-format.sh"; sourceTree = "<group>"; };
 		3992588311FAEB13008FC4F9 /* mmBibTeXExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mmBibTeXExporter.h; sourceTree = "<group>"; };
 		3992588411FAEB13008FC4F9 /* mmBibTeXExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = mmBibTeXExporter.m; sourceTree = "<group>"; };
 		39CA856E11FAEF7500308150 /* BibTeXExporter++.exporter */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BibTeXExporter++.exporter"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,6 +86,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				396EC7A012076BA200DE068E /* bibtex-format.sh */,
 				A6C5CF820D114ED300542EB3 /* Localizable.strings */,
 				A68CC5720C09DF4A006E1639 /* CharacterConversion.plist */,
 				A65E517F0B7522B5001242EE /* bibtex_characters.plist */,
@@ -211,6 +214,7 @@
 				A65E51800B7522B5001242EE /* bibtex_characters.plist in Resources */,
 				A68CC5730C09DF4A006E1639 /* CharacterConversion.plist in Resources */,
 				A6C5CF830D114ED300542EB3 /* Localizable.strings in Resources */,
+				396EC7A112076BA200DE068E /* bibtex-format.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
