@@ -12,6 +12,44 @@
 #import "NSString-Utilities.h"
 #import "BDSKConverter.h"
 
+
+
+
+
+@interface NSString (Digits)
+-(BOOL)isDecimalDigitOnly;
+@end
+
+@implementation NSString (Digits)
+-(BOOL)isDecimalDigitOnly {
+	return ([self length] > 0 && 
+			[[self stringByTrimmingCharactersInSet:
+			  [NSCharacterSet decimalDigitCharacterSet]] length] == 0);
+}
+@end
+
+
+
+@interface NSMutableString (Bibstring)
+-(void)appendKey:(NSString*)key withValue:(NSString*)value;
+-(void)appendKey:(NSString*)key withValueWithoutBraces:(NSString*)value ;
+@end
+
+@implementation NSMutableString (Bibstring)
+-(void)appendKey:(NSString*)key withValue:(NSString*)value {
+	if ([value isDecimalDigitOnly]) {
+		[self appendFormat:@"%@ = %@,\n", key, value];
+	} else {
+		[self appendFormat:@"%@ = {%@},\n", key, value];
+	}
+}
+-(void)appendKey:(NSString*)key withValueWithoutBraces:(NSString*)value {
+	[self appendFormat:@"%@ = %@,\n", key, value];
+}
+@end
+
+
+
 @interface mmBibTeXExporter (private)
 	BOOL shouldContinueExport;
 @end
@@ -243,7 +281,7 @@
 											 userInfo:userInfo]];
 		goto cleanup;
 	}
-		
+	
 	// Create beginning of file
 	NSMutableString *bibstring = [NSMutableString stringWithCapacity:1000000];
 	NSMutableSet *keys = [NSMutableSet setWithCapacity:[paperArray count]];
@@ -268,11 +306,87 @@
 			citeType = @"article";
 			if ([paper objectForKey:@"publicationTypes"]) {
 				NSArray *pubtypes = [[paper objectForKey:@"publicationTypes"] valueForKey:@"name"];
-				if ([pubtypes containsObject:@"Book"]) {
+				if ([pubtypes containsObject:@"book"])
 					citeType = @"book";
-				}
+				else if ([pubtypes containsObject:@"booklet"])
+					citeType = @"booklet";
+				else if ([pubtypes containsObject:@"conference"])
+					citeType = @"conference";
+				else if ([pubtypes containsObject:@"inbook"])
+					citeType = @"inbook";
+				else if ([pubtypes containsObject:@"incollection"])
+					citeType = @"incollection";
+				else if ([pubtypes containsObject:@"inproceedings"])
+					citeType = @"inproceedings";
+				else if ([pubtypes containsObject:@"manual"])
+					citeType = @"manual";
+				else if ([pubtypes containsObject:@"mastersthesis"])
+					citeType = @"mastersthesis";
+				else if ([pubtypes containsObject:@"misc"])
+					citeType = @"misc";
+				else if ([pubtypes containsObject:@"phdthesis"])
+					citeType = @"phdthesis";
+				else if ([pubtypes containsObject:@"proceedings"])
+					citeType = @"proceedings";
+				else if ([pubtypes containsObject:@"techreport"])
+					citeType = @"techreport";
+				else if ([pubtypes containsObject:@"unpublished"])
+					citeType = @"unpublished";
 			}
 		}
+		
+		//NSArray *bibtexEntries = [NSArray arrayWithObjects:@"article", @"book", @"bppklet", 
+		//						  @"conference", @"inbook", @"incollection", @"inproceedings", 
+		//						  @"manual", @"masterthesis", @"misc", @"phdthesis", 
+		//						  @"proceedings", @"techreport", @"unpublished", nil];
+		NSArray *required;
+		NSArray *optional;
+		
+		if ([citeType isEqualToString:@"article"]) {
+			required = [NSArray arrayWithObjects:@"author", @"title", @"journal", @"year", nil];
+			optional = [NSArray arrayWithObjects:@"volume", @"number", @"pages", @"month", @"note", nil];
+		} else if ([citeType isEqualToString:@"book"]) {
+			required = [NSArray arrayWithObjects:@"author", @"title", @"publisher", @"year", nil];
+			optional = [NSArray arrayWithObjects:@"volume", @"number", @"series", @"address", @"edition", @"month", @"note", nil];
+		} else if ([citeType isEqualToString:@"booklet"]) {
+			required = [NSArray arrayWithObjects:@"title", nil];
+			optional = [NSArray arrayWithObjects:@"author", @"howpublished", @"address", @"month", @"year", @"note", nil];
+		} else if ([citeType isEqualToString:@"conference"]) {
+			required = [NSArray arrayWithObjects:@"author", @"title", @"booktitle", @"year", nil];
+			optional = [NSArray arrayWithObjects:@"editor", @"volume", @"number", @"series", @"pages", @"address", @"month", @"organization", @"publisher", @"note", nil];
+		} else if ([citeType isEqualToString:@"inbook"]) {
+			required = [NSArray arrayWithObjects:@"author", @"title", @"chapter", @"pages", @"publisher", @"year", nil];
+			optional = [NSArray arrayWithObjects:@"volume", @"number", @"series", @"type", @"address", @"edition", @"month", @"note", nil];
+		} else if ([citeType isEqualToString:@"incollection"]) {
+			required = [NSArray arrayWithObjects:@"author", @"title", @"booktitle", @"publisher", @"year", nil];
+			optional = [NSArray arrayWithObjects:@"editor", @"volume", @"number", @"series", @"type", @"chapter", @"pages", @"address", @"edition", @"month", @"note", nil];
+		} else if ([citeType isEqualToString:@"inproceedings"]) {
+			required = [NSArray arrayWithObjects:@"author", @"title", @"booktitle", @"year", nil];
+			optional = [NSArray arrayWithObjects:@"editor", @"volume", @"number", @"series", @"pages", @"address", @"month", @"organization", @"publisher", @"note", nil];
+		} else if ([citeType isEqualToString:@"manual"]) {
+			required = [NSArray arrayWithObjects:@"title", nil];
+			optional = [NSArray arrayWithObjects:@"author", @"organization", @"address", @"edition", @"month", @"year", @"note", nil];
+		} else if ([citeType isEqualToString:@"mastersthesis"]) {
+			required = [NSArray arrayWithObjects:@"author", @"title", @"school", @"year", nil];
+			optional = [NSArray arrayWithObjects:@"type", @"address", @"month", @"note", nil];
+		} else if ([citeType isEqualToString:@"misc"]) {
+			required = [NSArray arrayWithObjects:nil];
+			optional = [NSArray arrayWithObjects:@"author", @"title", @"howpublished", @"month", @"year", @"note", nil];
+		} else if ([citeType isEqualToString:@"phdthesis"]) {
+			required = [NSArray arrayWithObjects:@"author", @"title", @"school", @"year", nil];
+			optional = [NSArray arrayWithObjects:@"type", @"address", @"month", @"note", nil];
+		} else if ([citeType isEqualToString:@"proceedings"]) {
+			required = [NSArray arrayWithObjects:@"title", @"year", nil];
+			optional = [NSArray arrayWithObjects:@"editor", @"volume", @"number", @"series", @"address", @"month", @"organization", @"publisher", @"note", nil];
+		} else if ([citeType isEqualToString:@"techreport"]) {
+			required = [NSArray arrayWithObjects:@"author", @"title", @"institution", @"year", nil];
+			optional = [NSArray arrayWithObjects:@"type", @"address", @"month", @"note", nil];
+		} else if ([citeType isEqualToString:@"unpublished"]) {
+			required = [NSArray arrayWithObjects:@"author", @"title", @"note", nil];
+			optional = [NSArray arrayWithObjects:@"month", @"year", nil];
+		}
+		
+		
 
 		// citekey, see if we have one already, otherwise create according to 
 		// the Bibdesk default %a1 : %Y %r2 (McCracken:2004yc)
@@ -284,7 +398,8 @@
 			NSString *authorString = nil;
 			NSArray *authors = [paper objectForKey:@"authors"];
 			if (authors && [authors count] > 0) {
-				authorString = [[[authors objectAtIndex:0] valueForKey:@"lastName"] stringByRemovingAccentsAndSpaces];
+				authorString = [[[authors objectAtIndex:0] valueForKey:@"lastName"] 
+								stringByRemovingAccentsAndSpaces];
 			}
 			
 			NSNumber *year = [paper objectForKey:@"year"];
@@ -312,13 +427,31 @@
 
 		[bibstring appendFormat:@"@%@{%@,\n", citeType, citeKey];
 		
+		
+		
 		// we prepare a temp string that we have to filter
 		NSMutableString *unfilteredString = [NSMutableString stringWithCapacity:10000];
 		
-		// authors
-		if ([paper objectForKey:@"authors"] && [[paper objectForKey:@"authors"] count] > 0){
-			[unfilteredString appendString:@"author = {"];
-			
+		
+		
+		// title
+		NSString *entryTitle = @"";
+		if ([paper objectForKey:@"title"]) {
+			entryTitle = [paper objectForKey:@"title"];
+		}
+		if ([required containsObject:@"title"] && [@"" isEqualToString:entryTitle]) {
+			entryTitle = @"FIXME";
+		}
+		// dirty hack to protect captials: add braces
+		// http://mekentosj.com/papers/forum15/viewtopic.php?id=340
+		entryTitle = [NSString stringWithFormat:@"{%@}", [paper objectForKey:@"title"]];
+		[unfilteredString appendKey:@"title" withValue:entryTitle];
+		
+		
+		
+		// author(s)
+		NSString *entryAuthor = @"";
+		if ([paper objectForKey:@"authors"] && [[paper objectForKey:@"authors"] count] > 0) {
 			NSEnumerator *authors = [[paper objectForKey:@"authors"] objectEnumerator];
 			NSMutableArray *authorArray = [NSMutableArray arrayWithCapacity:50];
 			NSDictionary *author;
@@ -326,21 +459,9 @@
 				NSString *lastName  = [author objectForKey:@"lastName"];
 				NSString *firstName = [author objectForKey:@"firstName"];
 				NSString *initials  = [author objectForKey:@"initials"];
-				
 				// insert author names like this: author = {Last, First and Last, First and ...}
 				// http://www.kfunigraz.ac.at/~binder/texhelp/bibtx-23.html
 				// http://www.tex.ac.uk/ctan/biblio/bibtex/contrib/doc/btxFAQ.pdf
-				
-				/* before:
-				if (firstName)
-					[authorArray addObject:[NSString stringWithFormat:@"%@ %@", firstName, lastName]];
-				else if (initials)
-					[authorArray addObject:[NSString stringWithFormat:@"%@ %@", initials, lastName]];
-				else 
-					[authorArray addObject:lastName];
-				*/
-				
-				// after:
 				if (firstName)
 					[authorArray addObject:[NSString stringWithFormat:@"%@, %@", lastName, firstName]];
 				else if (initials)
@@ -349,209 +470,284 @@
 					[authorArray addObject:lastName];
 			}
 			
-			if ([authorArray count] == 0 &&
-				([citeType isEqualToString:@"article"] || 
-				 [citeType isEqualToString:@"book"])) {
-				[unfilteredString appendString:@"FIXME}, \n"];
-			} else {
-				[unfilteredString appendFormat:@"%@}, \n", [authorArray componentsJoinedByString:@" and "]];
-			}
+			entryAuthor = [authorArray componentsJoinedByString:@" and "];
 		}
+		if ([required containsObject:@"author"] && [@"" isEqualToString:entryAuthor]) {
+			entryAuthor = @"FIXME";
+		}
+		[unfilteredString appendKey:@"author" withValue:entryAuthor];
 		
-		// journal 
-		NSDictionary *journal  = [[paper objectForKey:@"journal"] lastObject];
-		NSString *abbreviation = [journal objectForKey:@"abbreviation"];
-		if (journal) {
-			[unfilteredString appendFormat:@"journal = {%@},\n", 
-			 (abbreviation ? abbreviation : [journal objectForKey:@"name"])];
-		} else { // journal is empty --> FIXME
-			if ([citeType isEqualToString:@"article"]) {
-				[unfilteredString appendString:@"journal = {{FIXME}},\n"];
+		
+		
+		// journal
+		NSString *entryJournal = @"";
+		if ([paper objectForKey:@"journal"]) {
+			NSDictionary *journal  = [[paper objectForKey:@"journal"] lastObject];
+			NSString *abbreviation = [journal objectForKey:@"abbreviation"];
+			if (abbreviation) {
+				entryJournal = abbreviation;
+			} else {
+				entryJournal = [journal objectForKey:@"name"];
 			}
 		}
+		if ([required containsObject:@"journal"] && [@"" isEqualToString:entryJournal]) {
+			entryJournal = @"FIXME";
+		}
+		[unfilteredString appendKey:@"journal" withValue:entryJournal];
+		
+		
+		
 		
 		// publisher
-		if ([citeType isEqualToString:@"book"]) {
-			[unfilteredString appendString:@"publisher = {{FIXME}},\n"];
+		NSString *entryPublisher = @"";
+		if ([paper objectForKey:@"publisher"]) {
+			entryPublisher = [paper objectForKey:@"publisher"];
 		}
-		
-		// other info
-		if ([paper objectForKey:@"title"]) {
-			// dirty hack to protect captials: add braces
-			// http://mekentosj.com/papers/forum15/viewtopic.php?id=340
-			
-			// before:
-			// [unfilteredString appendFormat:@"title = {%@},\n", [paper objectForKey:@"title"]];
-			
-			// after:
-			// [unfilteredString appendFormat:@"title = {{%@}},\n", [paper objectForKey:@"title"]];
-			
-			if ([@"" isEqualToString:[paper objectForKey:@"title"]] &&
-				([citeType isEqualToString:@"article"] || 
-				 [citeType isEqualToString:@"book"])) {
-				[unfilteredString appendString:@"title = {{FIXME}},\n"];
-			} else {
-				[unfilteredString appendFormat:@"title = {{%@}},\n", [paper objectForKey:@"title"]];
-			}
+		if ([required containsObject:@"publisher"] && [@"" isEqualToString:entryJournal]) {
+			entryJournal = @"FIXME";
 		}
+		[unfilteredString appendKey:@"publisher" withValue:entryPublisher];
 		
+		
+		
+		// abstract
+		NSString *entryAbstract = @"";
 		if ([paper objectForKey:@"abstract"]) {
-			[unfilteredString appendFormat:@"abstract = {%@},\n", [paper objectForKey:@"abstract"]];
+			entryAbstract = [paper objectForKey:@"abstract"];
 		}
+		if ([required containsObject:@"abstract"] && [@"" isEqualToString:entryAbstract]) {
+			entryAbstract = @"FIXME";
+		}
+		[unfilteredString appendKey:@"abstract" withValue:entryAbstract];
+				
 		
+		
+		// affiliation
 		if ([paper objectForKey:@"affiliation"]) {
-			[unfilteredString appendFormat:@"affiliation = {%@},\n", [paper objectForKey:@"affiliation"]];
+			[unfilteredString appendKey:@"affiliation" 
+							  withValue:[paper objectForKey:@"affiliation"]];
 		}
 		
-		NSString *notes = [paper objectForKey:@"notes"];
-		if (notes) {
-			if ([notes length] < 50) {
-				[unfilteredString appendFormat:@"note = {%@},\n", notes];
+		
+		
+		// notes
+		NSString *entryNote = @"";
+		if ([paper objectForKey:@"notes"]) {
+			entryNote = [paper objectForKey:@"notes"];
+		}
+		if ([required containsObject:@"note"] && [@"" isEqualToString:entryNote]) {
+			entryNote = @"FIXME";
+		}
+		[unfilteredString appendKey:@"note" withValue:entryNote];
+		
+		
+		
+		// issue
+		NSString *entryIssue = @"";
+		if ([paper objectForKey:@"issue"]) {
+			if ([[paper objectForKey:@"issue"] hasPrefix:@"Ch. "]) {
+				entryIssue = [[paper objectForKey:@"issue"] substringFromIndex:4];
 			} else {
-				[unfilteredString appendFormat:@"annote = {%@},\n", notes];
+				entryIssue = [paper objectForKey:@"issue"];
 			}
 		}
-		
-		NSString *issue = [paper objectForKey:@"issue"];
-		if (issue) {
-			if ([issue hasPrefix:@"Ch. "]) {
-				[unfilteredString appendFormat:@"chapter = {%@},\n", [issue substringFromIndex:4]];
-			} else {
-				[unfilteredString appendFormat:@"number = {%@},\n", issue];
-			}
+		if ([required containsObject:@"issue"] && [@"" isEqualToString:entryIssue]) {
+			entryIssue = @"FIXME";
 		}
+		[unfilteredString appendKey:@"issue" withValue:entryIssue];
 		
-		if ([paper objectForKey:@"pages"]) {
-			// if there is no range within the pages entry, then append a "+"
-			
+		
+		
+		// pages
+		NSString *entryPages = @"";
+		if ([paper objectForKey:@"notes"]) {
 			NSMutableString *pages = [NSMutableString stringWithString:[paper objectForKey:@"pages"]];
 			NSRange r = [pages rangeOfString:@"-" options:NSBackwardsSearch];
 			if (r.location != NSNotFound) {
+				// correct "-" for BibTeX
 				[pages replaceCharactersInRange:r withString:@"--"];
-				[unfilteredString appendFormat:@"pages = {%@},\n", pages];
 			} else if (![@"" isEqualToString:pages]) {
-				[unfilteredString appendFormat:@"pages = {%@+},\n", pages];
-			} else {
-				[unfilteredString appendString:@"pages = {FIXME},\n"];
+				// if there is no range within the pages entry, append "ff"
+				[pages appendString:@" ff"];
+			}
+			if ([@"" isEqualToString:pages]) {
+				entryPages = pages;
 			}
 		}
-				
-		if ([paper objectForKey:@"volume"]) {
-			[unfilteredString appendFormat:@"volume = {%@},\n", [paper objectForKey:@"volume"]];
+		if ([required containsObject:@"pages"] && [@"" isEqualToString:entryPages]) {
+			entryPages = @"FIXME";
 		}
+		[unfilteredString appendKey:@"pages" withValue:entryPages];
 		
+		
+		
+		// volume
+		NSString *entryVolume = @"";
+		if ([paper objectForKey:@"volume"]) {
+			entryVolume = [paper objectForKey:@"volume"];
+		}
+		if ([required containsObject:@"volume"] && [@"" isEqualToString:entryVolume]) {
+			entryVolume = @"FIXME";
+		}
+		[unfilteredString appendKey:@"volume" withValue:entryVolume];
+		
+		
+		
+		// year
+		NSString *entryYear = @"";
 		if ([paper objectForKey:@"year"]) {
 			// brackets and quotes are optional for numbers, see "2.1.1 An Example File"
 			// http://www.tug.org/pracjourn/2006-4/fenn/fenn.pdf
-			
-			// before:
-			// [unfilteredString appendFormat:@"year = {%d},\n", [[paper objectForKey:@"year"] intValue]];
-			
-			// after:
-			// [unfilteredString appendFormat:@"year = %d,\n", [[paper objectForKey:@"year"] intValue]];
-			
-			if ([@"" isEqualToString:[paper objectForKey:@"year"]] &&
-				([citeType isEqualToString:@"article"] || 
-				 [citeType isEqualToString:@"book"])) {
-				[unfilteredString appendString:@"year = {{FIXME}},\n"];
-			} else {
-				[unfilteredString appendFormat:@"year = %d,\n", [[paper objectForKey:@"year"] intValue]];
+			entryYear = [NSString stringWithFormat:@"%d", [[paper objectForKey:@"year"] intValue]];
+		}
+		if ([required containsObject:@"year"] && [@"" isEqualToString:entryYear]) {
+			entryYear = @"FIXME";
+		}
+		[unfilteredString appendKey:@"year" withValue:entryYear];
+		
+		
+		
+		// month
+		NSString *entryMonth = @"";
+		if ([paper objectForKey:@"publishedDate"]) {
+			NSDate *pubdate = [paper objectForKey:@"publishedDate"];
+			if (pubdate) {
+				// correct month abbreviations, see "Q13: Should I use words or 
+				// numerals for the month, edition, etc., fields, and why?"
+				// http://www.tex.ac.uk/ctan/biblio/bibtex/contrib/doc/btxFAQ.pdf
+				
+				// before:
+				// NSArray *monthArray = [NSArray arrayWithObjects:@"Jan", @"Feb", @"Mar", @"Apr", @"May", 
+				//							@"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec", nil];
+				
+				// after:
+				NSArray *monthArray = [NSArray arrayWithObjects:
+									   @"jan", @"feb", @"mar", 
+									   @"apr", @"may", @"jun", 
+									   @"jul", @"aug", @"sep", 
+									   @"oct", @"nov", @"dec", nil];
+				NSDictionary *localeDictionary = [NSDictionary dictionaryWithObject:monthArray 
+																			 forKey:NSShortMonthNameArray];
+				entryMonth = [pubdate descriptionWithCalendarFormat:@"%b" 
+														   timeZone:[NSTimeZone defaultTimeZone] 
+															 locale:localeDictionary];
 			}
 		}
+		if ([required containsObject:@"month"] && [@"" isEqualToString:entryMonth]) {
+			entryMonth = @"{FIXME}";
+		}
+		[unfilteredString appendKey:@"month" withValueWithoutBraces:entryMonth];
 		
-		NSDate *pubdate = [paper objectForKey:@"publishedDate"];
-		if (pubdate) {
-			// correct month abbreviations, see "Q13: Should I use words or 
-			// numerals for the month, edition, etc., fields, and why?"
-			// http://www.tex.ac.uk/ctan/biblio/bibtex/contrib/doc/btxFAQ.pdf
-			
-			// before:
-			// NSArray *monthArray = [NSArray arrayWithObjects:@"Jan", @"Feb", @"Mar", @"Apr", @"May", 
-			//							@"Jun", @"Jul", @"Aug", @"Sep", @"Oct", @"Nov", @"Dec", nil];
-			
-			// after:
-			NSArray *monthArray = [NSArray arrayWithObjects:@"jan", @"feb", @"mar", 
-															@"apr", @"may", @"jun", 
-															@"jul", @"aug", @"sep", 
-															@"oct", @"nov", @"dec", nil];
-			
-			NSDictionary *localeDictionary = [NSDictionary dictionaryWithObject:monthArray 
-																		 forKey:NSShortMonthNameArray];
-			[unfilteredString appendFormat:@"month = %@,\n", 
-									[pubdate descriptionWithCalendarFormat:@"%b" 
-																  timeZone:[NSTimeZone defaultTimeZone] 
-																	locale:localeDictionary]];
-		}
-	
+		
+		
+		// language
 		if ([paper objectForKey:@"language"]) {
-			[unfilteredString appendFormat:@"language = {%@},\n", [paper objectForKey:@"language"]];
+			[unfilteredString appendKey:@"language" 
+							  withValue:[paper objectForKey:@"language"]];
 		}
-
+		
+		
+		
+		// label
 		if ([paper objectForKey:@"label"] && ![[paper objectForKey:@"label"] hasPrefix:@"cite-key"]) {
-			[unfilteredString appendFormat:@"label = {%@},\n", [paper objectForKey:@"label"]];
+			[unfilteredString appendKey:@"label" 
+							  withValue:[paper objectForKey:@"label"]];
 		}
-	
-		// Keywords
+		
+		
+		
+		// keywords
 		NSArray *keywords = [[paper objectForKey:@"keywords"] allObjects];
 		if (keywords && [keywords count] > 0) {
-			[unfilteredString appendString:@"keywords = {"];
-			[unfilteredString appendFormat:@"%@}, \n", [[keywords valueForKey:@"name"] 
-														componentsJoinedByString:@", "]];
+			[unfilteredString appendKey:@"keywords" 
+							  withValue:[[keywords valueForKey:@"name"] componentsJoinedByString:@", "]];
 		}
-			
+		
+		
+		
+		
+		
+		// TODO: check if these values exist in Papers
+		if ([required containsObject:@"booktitle"])
+			[unfilteredString appendKey:@"booktitle" withValue:@"FIXME"];
+		if ([required containsObject:@"chapter"])
+			[unfilteredString appendKey:@"chapter" withValue:@"FIXME"];
+		if ([required containsObject:@"school"])
+			[unfilteredString appendKey:@"school" withValue:@"FIXME"];
+		if ([required containsObject:@"institution"])
+			[unfilteredString appendKey:@"institution" withValue:@"FIXME"];
+		
+		
+		
+		
+		
+		
 		// filter the results thusfar
 		[bibstring appendString:[unfilteredString stringByTeXifyingString]];
-
+		
+		
+		
+		
+		
 		// add the other fields we don't have to filter
+		
 		NSDate *importdate = [paper objectForKey:@"importedDate"];
 		if (importdate) {
-			[bibstring appendFormat:@"date-added = {%@},\n", 
-									 [importdate descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S %z" 
-																	  timeZone:[NSTimeZone defaultTimeZone] 
-																		locale:nil]];
+			[bibstring appendKey:@"date-added" 
+					   withValue:[importdate descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S %z" 
+																  timeZone:[NSTimeZone defaultTimeZone] 
+																	locale:nil]];
 		}
-	
+		
 		NSDate *modifieddate = [paper objectForKey: @"modifiedDate"];
 		if (modifieddate) {
-			[bibstring appendFormat:@"date-modified = {%@},\n", 
-									 [modifieddate descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S %z" 
-																		timeZone:[NSTimeZone defaultTimeZone] 
-																		  locale:nil]];
+			[bibstring appendKey:@"date-modified" 
+					   withValue:[modifieddate descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S %z" 
+																	timeZone:[NSTimeZone defaultTimeZone] 
+																	  locale:nil]];
 		}
-
+		
 		if ([paper objectForKey:@"doi"]) {
-			[bibstring appendFormat:@"doi = {%@},\n", [paper objectForKey:@"doi"]];
+			[bibstring appendKey:@"doi" 
+					   withValue:[paper objectForKey:@"doi"]];
 		}
 		
 		if ([paper objectForKey:@"pii"]) {
-			[bibstring appendFormat:@"pii = {%@},\n", [paper objectForKey:@"pii"]];
+			[unfilteredString appendKey:@"pii" 
+							  withValue:[paper objectForKey:@"pii"]];
 		}
 		
 		if ([paper objectForKey:@"pmid"]) {
-			[bibstring appendFormat:@"pmid = {%@},\n", [paper objectForKey:@"pmid"]];
+			[bibstring appendKey:@"pmid" 
+					   withValue:[paper objectForKey:@"pmid"]];
 		}
 		
 		if ([paper objectForKey:@"url"]) {
-			[bibstring appendFormat:@"URL = {%@},\n", 
-			 [[paper objectForKey:@"url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+			[bibstring appendKey:@"URL" 
+					   withValue:[[paper objectForKey:@"url"] 
+								  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 		}
 		
 		if ([paper objectForKey:@"path"]) {
-			[bibstring appendFormat:@"local-url = {file://localhost%@},\n", 
-			 [[paper objectForKey:@"path"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+			[bibstring appendKey:@"local-url" 
+					   withValue:[NSString stringWithFormat:@"file://localhost%@", 
+								  [[paper objectForKey:@"path"] 
+								   stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 		}
-
+		
 		if ([paper objectForKey:@"uri"]) {
 			NSURL *uri = [paper objectForKey:@"uri"];
 			NSURL *link = [[[NSURL alloc] initWithScheme:@"papers" host:[uri host] path:[uri path]] autorelease];
-			[bibstring appendFormat:@"uri = {%@},\n", 
-			 [[link absoluteString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+			[bibstring appendKey:@"uri" 
+					   withValue:[[link absoluteString] 
+								  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 		}
 		
 		if ([paper objectForKey:@"timesRead"] && [[paper objectForKey:@"timesRead"] intValue] > 0) {
-			[bibstring appendString:@"read = {Yes},\n"];
+			[bibstring appendKey:@"read" 
+					   withValue:@"Yes"];
 		}
-
+		
 		if ([paper objectForKey:@"rating"]) {
 			// brackets and quotes are optional for numbers, see "2.1.1 An Example File"
 			// http://www.tug.org/pracjourn/2006-4/fenn/fenn.pdf
@@ -560,8 +756,13 @@
 			// [bibstring appendFormat:@"rating = {%d},\n", [[paper objectForKey:@"rating"] intValue]];
 			
 			// after:
-			[bibstring appendFormat:@"rating = %d,\n", [[paper objectForKey:@"rating"] intValue]];
+			[bibstring appendKey:@"rating" 
+					   withValue:[NSString stringWithFormat:@"%d", 
+								  [[paper objectForKey:@"rating"] intValue]]];
 		}
+		
+		
+		
 		
 		// finish record
 		[bibstring appendString:@"}\n\n"];
@@ -571,7 +772,7 @@
 		
 	}
 	
-	NSLog(@"%@", bibstring);
+	//NSLog(@"%@", bibstring);
 	
 	NSError *err = nil;	
 	[bibstring writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:&err];
