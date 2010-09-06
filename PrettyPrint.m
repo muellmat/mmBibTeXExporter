@@ -20,29 +20,46 @@
 
 -(id)init {
 	[super init];
+	
+	space = margin = 6;
+	indent_by = 0;
+	offset = 2;
+	
 	return self;
 }
 
 -(void)dealloc {
-	stackS = nil, [stackS release];
-	stackP = nil, [stackP release];
+	scanStack  = nil, [scanStack  release];
+	printStack = nil, [printStack release];
 	input  = nil, [input  release];
 	output = nil, [output release];
 	[super dealloc];
 }
 
+-(void)setMargin:(int)n {
+	margin = n;
+	space = n;
+}
+
+-(void)setIndentBy:(int)n {
+	indent_by = n;
+}
+
+-(void)setOffset:(int)n {
+	offset = n;
+}
+
 -(NSString*)prettyPrintString:(NSString*)s {
-	stackS = nil, [stackS release];
-	stackP = nil, [stackP release];
+	scanStack  = nil, [scanStack  release];
+	printStack = nil, [printStack release];
 	stream = nil, [stream release];
 	input  = nil, [input  release];
 	output = nil, [output release];
 	
 	left = right = leftTotal = rightTotal = 0;
-	margin = space = 1;
 	
-	stackS = [NSMutableArray new];
-	stackP = [NSMutableArray new];
+	scanStack  = [NSMutableArray new];
+	printStack = [NSMutableArray new];
 	stream = [[NSMutableArray alloc] initWithCapacity:[s length]];
 	input  = [NSMutableString new];
 	output = [NSMutableString new];
@@ -59,7 +76,7 @@
 }
 
 -(void)indent:(int)i {
-	//[output appendString:NEWLINE];
+	[output appendString:NEWLINE];
 	while (--i > 0) {
 	   [output appendString:BLANK];
 	}
@@ -68,21 +85,21 @@
 
 -(void)print:(NSString*)x withLength:(int)l {
 	if ([x isEqualToString:START_BLOCK]) {
-		[stackP addObject:[NSNumber numberWithInteger:space]];
+		[printStack addObject:[NSNumber numberWithInt:space]];
 	} else if ([x isEqualToString:END_BLOCK]) {
-		[stackP lastObject];
-		[stackP removeLastObject];
+		[printStack lastObject];
+		[printStack removeLastObject];
 	} else if ([x isWhitespace]) {
 		if (l > space) {
-			space = [[stackP lastObject] intValue]-2;
-			[self indent:margin-space];
+			space = [[printStack lastObject] intValue]-indent_by;
+			[self indent:offset+margin-space];
 		} else {
 			[output appendString:x];
 			space = space-1;
 		}
 	} else {
+		space = space-l;
 		[output appendString:x];
-		space = space-[x length];
 	}
 }
 
@@ -124,62 +141,56 @@
 -(void)scan {
 	NSString *x;
 	int x1;
-	int i=0;
 	while (true) {
 		x = [self receive];
-		i++;
 		if ([x isEqualToString:@""]) {
 			break;
 		} else if ([x isEqualToString:START_BLOCK]) {
-			if ([stackS count] == 0) {
-				left = 1;
-				right = 1;
-				rightTotal = 1;
+			if ([scanStack count] == 0) {
+				left = right = rightTotal = 1;
 			} else {
 				right = right+1;
 			}
 			[stream replaceObjectAtIndex:right withObject:x];
 			size[right] = -rightTotal;
-			[stackS addObject:[NSNumber numberWithInteger:right]];
+			[scanStack addObject:[NSNumber numberWithInt:right]];
 		} else if ([x isEqualToString:END_BLOCK]) {
 			right = right+1;
 			[stream replaceObjectAtIndex:right withObject:x];
 			size[right] = 0;
-			x1 = [[stackS lastObject] intValue];
-			[stackS removeLastObject];
+			x1 = [[scanStack lastObject] intValue];
+			[scanStack removeLastObject];
 			size[x1] = size[x1]+rightTotal;
 			if ([[NSString stringWithString:[stream objectAtIndex:x1]] isWhitespace]) {
-				x1 = [[stackS lastObject] intValue];
-				[stackS removeLastObject];
+				x1 = [[scanStack lastObject] intValue];
+				[scanStack removeLastObject];
 				size[x1] = size[x1]+rightTotal;
 			}
-			if ([stackS count] == 0) {
+			if ([scanStack count] == 0) {
 				do {
-					[self print:[stream objectAtIndex:left] 
-					 withLength:size[left]];
+					[self print:[stream objectAtIndex:left] withLength:size[left]];
 					left = left+1;
 				} while (left <= right);
 			}
 		} else if ([x isWhitespace]) {
 			right = right+1;
-			x1 = [[stackS lastObject] intValue];
+			x1 = [[scanStack lastObject] intValue];
 			if ([[NSString stringWithString:[stream objectAtIndex:x1]] isWhitespace]) {
-				x1 = [[stackS lastObject] intValue];
-				[stackS removeLastObject];
-				size[x1] = size[x1]+rightTotal;
+				size[[[scanStack lastObject] intValue]] = rightTotal+size[x1];
+				[scanStack removeLastObject];
 			}
 			[stream replaceObjectAtIndex:right withObject:x];
 			size[right] = -rightTotal;
-			[stackS addObject:[NSNumber numberWithInteger:right]];
+			[scanStack addObject:[NSNumber numberWithInt:right]];
 			rightTotal = rightTotal+1;
 		} else {
-			if ([stackS count] == 0) {
+			if ([scanStack count] == 0) {
 				[self print:x withLength:[x length]];
 			} else {
 				right = right+1;
 				[stream replaceObjectAtIndex:right withObject:x];
 				size[right] = [x length];
-				rightTotal = rightTotal+[x length];
+				rightTotal  = rightTotal+[x length];
 			}
 		}
 	}

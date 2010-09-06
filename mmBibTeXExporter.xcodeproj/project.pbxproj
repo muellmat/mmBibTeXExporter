@@ -10,6 +10,8 @@
 		396EC7A112076BA200DE068E /* bibtex-format.sh in Resources */ = {isa = PBXBuildFile; fileRef = 396EC7A012076BA200DE068E /* bibtex-format.sh */; };
 		3992588511FAEB13008FC4F9 /* mmBibTeXExporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 3992588311FAEB13008FC4F9 /* mmBibTeXExporter.h */; };
 		3992588611FAEB13008FC4F9 /* mmBibTeXExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3992588411FAEB13008FC4F9 /* mmBibTeXExporter.m */; };
+		39CCDA8212356BFA000345DD /* PrettyPrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 39CCDA8012356BFA000345DD /* PrettyPrint.h */; };
+		39CCDA8312356BFA000345DD /* PrettyPrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 39CCDA8112356BFA000345DD /* PrettyPrint.m */; };
 		849786DF05FB68B20030260A /* Panel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 849786DE05FB68B20030260A /* Panel.nib */; };
 		849786E505FB6AE70030260A /* exporter.icns in Resources */ = {isa = PBXBuildFile; fileRef = 849786E405FB6AE70030260A /* exporter.icns */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
@@ -35,6 +37,8 @@
 		3992588311FAEB13008FC4F9 /* mmBibTeXExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mmBibTeXExporter.h; sourceTree = "<group>"; };
 		3992588411FAEB13008FC4F9 /* mmBibTeXExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = mmBibTeXExporter.m; sourceTree = "<group>"; };
 		39CA856E11FAEF7500308150 /* BibTeXExporter++.exporter */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BibTeXExporter++.exporter"; sourceTree = BUILT_PRODUCTS_DIR; };
+		39CCDA8012356BFA000345DD /* PrettyPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyPrint.h; sourceTree = "<group>"; };
+		39CCDA8112356BFA000345DD /* PrettyPrint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyPrint.m; sourceTree = "<group>"; };
 		849786DE05FB68B20030260A /* Panel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Panel.nib; sourceTree = "<group>"; };
 		849786E405FB6AE70030260A /* exporter.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = exporter.icns; sourceTree = "<group>"; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -103,6 +107,8 @@
 			children = (
 				3992588311FAEB13008FC4F9 /* mmBibTeXExporter.h */,
 				3992588411FAEB13008FC4F9 /* mmBibTeXExporter.m */,
+				39CCDA8012356BFA000345DD /* PrettyPrint.h */,
+				39CCDA8112356BFA000345DD /* PrettyPrint.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -158,6 +164,7 @@
 				A65E51D30B7526F6001242EE /* NSString-Utilities.h in Headers */,
 				A68CC5700C09DF43006E1639 /* BDSKConverter.h in Headers */,
 				3992588511FAEB13008FC4F9 /* mmBibTeXExporter.h in Headers */,
+				39CCDA8212356BFA000345DD /* PrettyPrint.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +236,7 @@
 				A65E51D40B7526F6001242EE /* NSString-Utilities.m in Sources */,
 				A68CC5710C09DF43006E1639 /* BDSKConverter.m in Sources */,
 				3992588611FAEB13008FC4F9 /* mmBibTeXExporter.m in Sources */,
+				39CCDA8312356BFA000345DD /* PrettyPrint.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

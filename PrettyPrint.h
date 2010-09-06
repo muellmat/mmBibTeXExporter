@@ -18,14 +18,18 @@
 @end
 
 @interface PrettyPrint : NSObject {
-	int left, right, leftTotal, rightTotal, margin, space;
-	NSMutableArray *stackS;
-	NSMutableArray *stackP;
+	int left, right, leftTotal, rightTotal, margin, space, offset, indent_by;
+	NSMutableArray *scanStack;
+	NSMutableArray *printStack;
 	NSMutableArray *stream;
 	NSMutableString *input;
 	NSMutableString *output;
 	int *size;
 }
+
+-(void)setMargin:(int)n;
+-(void)setIndentBy:(int)n;
+-(void)setOffset:(int)n;
 
 -(NSString*)prettyPrintString:(NSString*)s;
 

@@ -335,13 +335,8 @@
 			}
 		}
 		
-		//NSArray *bibtexEntries = [NSArray arrayWithObjects:@"article", @"book", @"bppklet", 
-		//						  @"conference", @"inbook", @"incollection", @"inproceedings", 
-		//						  @"manual", @"masterthesis", @"misc", @"phdthesis", 
-		//						  @"proceedings", @"techreport", @"unpublished", nil];
 		NSArray *required;
 		NSArray *optional;
-		
 		if ([citeType isEqualToString:@"article"]) {
 			required = [NSArray arrayWithObjects:@"author", @"title", @"journal", @"year", nil];
 			optional = [NSArray arrayWithObjects:@"volume", @"number", @"pages", @"month", @"note", nil];
@@ -560,7 +555,7 @@
 		
 		// pages
 		NSString *entryPages = @"";
-		if ([paper objectForKey:@"notes"]) {
+		if ([paper objectForKey:@"pages"]) {
 			NSMutableString *pages = [NSMutableString stringWithString:[paper objectForKey:@"pages"]];
 			NSRange r = [pages rangeOfString:@"-" options:NSBackwardsSearch];
 			if (r.location != NSNotFound) {
@@ -568,11 +563,9 @@
 				[pages replaceCharactersInRange:r withString:@"--"];
 			} else if (![@"" isEqualToString:pages]) {
 				// if there is no range within the pages entry, append "ff"
-				[pages appendString:@" ff"];
+				[pages appendString:@"ff"];
 			}
-			if ([@"" isEqualToString:pages]) {
-				entryPages = pages;
-			}
+			entryPages = [NSString stringWithFormat:@"%@", pages];
 		}
 		if ([required containsObject:@"pages"] && [@"" isEqualToString:entryPages]) {
 			entryPages = @"FIXME";
@@ -634,7 +627,7 @@
 			}
 		}
 		if ([required containsObject:@"month"] && [@"" isEqualToString:entryMonth]) {
-			entryMonth = @"{FIXME}";
+			entryMonth = @"FIXME";
 		}
 		[unfilteredString appendKey:@"month" withValueWithoutBraces:entryMonth];
 		
