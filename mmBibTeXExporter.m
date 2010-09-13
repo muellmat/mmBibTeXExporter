@@ -37,15 +37,15 @@
 @end
 
 @implementation NSMutableString (Bibstring)
+-(void)appendKey:(NSString*)key withValueWithoutBraces:(NSString*)value {
+	[self appendFormat:@" [%@ [= [%@,]]]\n", key, value];
+}
 -(void)appendKey:(NSString*)key withValue:(NSString*)value {
 	if ([value isDecimalDigitOnly]) {
-		[self appendFormat:@"%@ = %@,\n", key, value];
+		[self appendKey:key withValueWithoutBraces:value];
 	} else {
-		[self appendFormat:@"[%@ [= [{%@},]]]\n", key, value];
+		[self appendFormat:@" [%@ [= [{%@},]]]\n", key, value];
 	}
-}
--(void)appendKey:(NSString*)key withValueWithoutBraces:(NSString*)value {
-	[self appendFormat:@"%@ = %@,\n", key, value];
 }
 @end
 
@@ -511,7 +511,7 @@
 		if ([required containsObject:@"abstract"] && [@"" isEqualToString:entryAbstract]) {
 			entryAbstract = @"FIXME";
 		}
-		//[unfilteredString appendKey:@"abstract" withValue:entryAbstract];
+		[unfilteredString appendKey:@"abstract" withValue:entryAbstract];
 				
 		
 		
@@ -531,7 +531,7 @@
 		if ([required containsObject:@"note"] && [@"" isEqualToString:entryNote]) {
 			entryNote = @"FIXME";
 		}
-		//[unfilteredString appendKey:@"note" withValue:entryNote];
+		[unfilteredString appendKey:@"note" withValue:entryNote];
 		
 		
 		
@@ -547,7 +547,7 @@
 		if ([required containsObject:@"issue"] && [@"" isEqualToString:entryIssue]) {
 			entryIssue = @"FIXME";
 		}
-		//[unfilteredString appendKey:@"issue" withValue:entryIssue];
+		[unfilteredString appendKey:@"issue" withValue:entryIssue];
 		
 		
 		
@@ -568,7 +568,7 @@
 		if ([required containsObject:@"pages"] && [@"" isEqualToString:entryPages]) {
 			entryPages = @"FIXME";
 		}
-		//[unfilteredString appendKey:@"pages" withValue:entryPages];
+		[unfilteredString appendKey:@"pages" withValue:entryPages];
 		
 		
 		
@@ -580,7 +580,7 @@
 		if ([required containsObject:@"volume"] && [@"" isEqualToString:entryVolume]) {
 			entryVolume = @"FIXME";
 		}
-		//[unfilteredString appendKey:@"volume" withValue:entryVolume];
+		[unfilteredString appendKey:@"volume" withValue:entryVolume];
 		
 		
 		
@@ -594,7 +594,7 @@
 		if ([required containsObject:@"year"] && [@"" isEqualToString:entryYear]) {
 			entryYear = @"FIXME";
 		}
-		//[unfilteredString appendKey:@"year" withValue:entryYear];
+		[unfilteredString appendKey:@"year" withValue:entryYear];
 		
 		
 		
@@ -627,10 +627,10 @@
 		if ([required containsObject:@"month"] && [@"" isEqualToString:entryMonth]) {
 			entryMonth = @"FIXME";
 		}
-		//[unfilteredString appendKey:@"month" withValueWithoutBraces:entryMonth];
+		[unfilteredString appendKey:@"month" withValueWithoutBraces:entryMonth];
 		
 		
-		/*
+		
 		// language
 		if ([paper objectForKey:@"language"]) {
 			[unfilteredString appendKey:@"language" 
@@ -667,7 +667,7 @@
 			[unfilteredString appendKey:@"school" withValue:@"FIXME"];
 		if ([required containsObject:@"institution"])
 			[unfilteredString appendKey:@"institution" withValue:@"FIXME"];
-		*/
+		
 		
 		
 		
@@ -681,7 +681,7 @@
 		
 		
 		// add the other fields we don't have to filter
-		/*
+		
 		NSDate *importdate = [paper objectForKey:@"importedDate"];
 		if (importdate) {
 			[bibstring appendKey:@"date-added" 
@@ -751,7 +751,6 @@
 					   withValue:[NSString stringWithFormat:@"%d", 
 								  [[paper objectForKey:@"rating"] intValue]]];
 		}
-		*/
 		
 		
 		
@@ -774,16 +773,28 @@
 	
 	NSString *bibstringIN = [NSString stringWithFormat:@"%@", bibstring];
 	PrettyPrint *pp = [[PrettyPrint alloc] init];
-	[pp setIndentBy:0];
-	[pp setOffset:40];
-	[pp setMargin:0];
+	[pp setIndentBy:4];
+	[pp setOffset:80];
+	[pp setMargin:80];
 	NSString *bibstringOUT = [pp prettyPrintString:bibstringIN];
 	
 	
 	
+	
+	
+	
+	/* test */
+	
 	NSString *line = @"1---------2---------3---------4---------5---------6---------7---------8---------";
 	NSString *margin = @"\n\n\n\n\n\n\n";
 	NSLog(@"\n%@\n%@\n%@\n%@\n%@\n%@\n%@\n%@\n%@\n", margin, line, bibstringIN, line, margin, line, bibstringOUT, line, margin);	
+	
+	[bibstring appendString:@"\n\n\n\n\n"];
+	[bibstring appendString:bibstringOUT];
+	
+	
+	
+	
 	
 	
 	
