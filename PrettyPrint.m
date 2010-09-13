@@ -84,23 +84,27 @@
 
 
 -(void)print:(NSString*)x withLength:(int)l {
-	if ([x isEqualToString:START_BLOCK]) {
+	if (![x isEqualToString:START_BLOCK] && ![x isEqualToString:END_BLOCK] && ![x isWhitespace]) {
+		[output appendString:x];
+		space = space-l;
+	} else if ([x isEqualToString:START_BLOCK]) {
 		[printStack addObject:[NSNumber numberWithInt:space]];
 	} else if ([x isEqualToString:END_BLOCK]) {
-		[printStack lastObject];
+		[printStack lastObject];//todo
 		[printStack removeLastObject];
 	} else if ([x isWhitespace]) {
 		if (l > space) {
-			space = [[printStack lastObject] intValue]-indent_by;
-			[self indent:offset+margin-space];
+			space = [[printStack lastObject] intValue]-2;//indent_by; //2;//todo
+			//[self indent:offset+margin-space];//todo
+			[self indent:margin-space];
 		} else {
 			[output appendString:x];
-			space = space-1;
+			space = space-1;//todo
 		}
-	} else {
-		space = space-l;
+	}/* else {
 		[output appendString:x];
-	}
+		space = space-l;
+	}*/
 }
 
 -(NSString*)receive {
@@ -160,17 +164,23 @@
 			size[right] = 0;
 			x1 = [[scanStack lastObject] intValue];
 			[scanStack removeLastObject];
-			size[x1] = size[x1]+rightTotal;
+			size[x1] = rightTotal+size[x1];
 			if ([[NSString stringWithString:[stream objectAtIndex:x1]] isWhitespace]) {
 				x1 = [[scanStack lastObject] intValue];
 				[scanStack removeLastObject];
-				size[x1] = size[x1]+rightTotal;
+				size[x1] = rightTotal+size[x1];
 			}
 			if ([scanStack count] == 0) {
+				for (;left<=right;left++) {
+					[self print:[stream objectAtIndex:left] withLength:size[left]];
+					//left = left+1;
+				}
+				
+				/*
 				do {
 					[self print:[stream objectAtIndex:left] withLength:size[left]];
 					left = left+1;
-				} while (left <= right);
+				} while (left <= right);*/
 			}
 		} else if ([x isWhitespace]) {
 			right = right+1;

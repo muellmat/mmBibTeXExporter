@@ -11,6 +11,7 @@
 #import "mmBibTeXExporter.h"
 #import "NSString-Utilities.h"
 #import "BDSKConverter.h"
+#import "PrettyPrint.h"
 
 
 
@@ -40,7 +41,7 @@
 	if ([value isDecimalDigitOnly]) {
 		[self appendFormat:@"%@ = %@,\n", key, value];
 	} else {
-		[self appendFormat:@"%@ = {%@},\n", key, value];
+		[self appendFormat:@"[%@ [= [{%@},]]]\n", key, value];
 	}
 }
 -(void)appendKey:(NSString*)key withValueWithoutBraces:(NSString*)value {
@@ -286,9 +287,6 @@
 	NSMutableString *bibstring = [NSMutableString stringWithCapacity:1000000];
 	NSMutableSet *keys = [NSMutableSet setWithCapacity:[paperArray count]];
 	
-	[bibstring appendString:@"%% This BibTeX bibliography file in UTF-8 format was "];
-	[bibstring appendString:@"created using Papers.\n%% http://mekentosj.com/papers/\n\n"];
-	
 	// Iterate over each paper
 	NSString *citeType; // needed to add a "FIXME" for empty required fields.
 	// see http://www.andy-roberts.net/misc/latex/sessions/bibtex/bibentries.pdf
@@ -420,7 +418,7 @@
 			[keys addObject: citeKey];
 		}
 
-		[bibstring appendFormat:@"@%@{%@,\n", citeType, citeKey];
+		[bibstring appendFormat:@"[@%@{%@,\n", citeType, citeKey];
 		
 		
 		
@@ -513,7 +511,7 @@
 		if ([required containsObject:@"abstract"] && [@"" isEqualToString:entryAbstract]) {
 			entryAbstract = @"FIXME";
 		}
-		[unfilteredString appendKey:@"abstract" withValue:entryAbstract];
+		//[unfilteredString appendKey:@"abstract" withValue:entryAbstract];
 				
 		
 		
@@ -533,7 +531,7 @@
 		if ([required containsObject:@"note"] && [@"" isEqualToString:entryNote]) {
 			entryNote = @"FIXME";
 		}
-		[unfilteredString appendKey:@"note" withValue:entryNote];
+		//[unfilteredString appendKey:@"note" withValue:entryNote];
 		
 		
 		
@@ -549,7 +547,7 @@
 		if ([required containsObject:@"issue"] && [@"" isEqualToString:entryIssue]) {
 			entryIssue = @"FIXME";
 		}
-		[unfilteredString appendKey:@"issue" withValue:entryIssue];
+		//[unfilteredString appendKey:@"issue" withValue:entryIssue];
 		
 		
 		
@@ -570,7 +568,7 @@
 		if ([required containsObject:@"pages"] && [@"" isEqualToString:entryPages]) {
 			entryPages = @"FIXME";
 		}
-		[unfilteredString appendKey:@"pages" withValue:entryPages];
+		//[unfilteredString appendKey:@"pages" withValue:entryPages];
 		
 		
 		
@@ -582,7 +580,7 @@
 		if ([required containsObject:@"volume"] && [@"" isEqualToString:entryVolume]) {
 			entryVolume = @"FIXME";
 		}
-		[unfilteredString appendKey:@"volume" withValue:entryVolume];
+		//[unfilteredString appendKey:@"volume" withValue:entryVolume];
 		
 		
 		
@@ -596,7 +594,7 @@
 		if ([required containsObject:@"year"] && [@"" isEqualToString:entryYear]) {
 			entryYear = @"FIXME";
 		}
-		[unfilteredString appendKey:@"year" withValue:entryYear];
+		//[unfilteredString appendKey:@"year" withValue:entryYear];
 		
 		
 		
@@ -629,10 +627,10 @@
 		if ([required containsObject:@"month"] && [@"" isEqualToString:entryMonth]) {
 			entryMonth = @"FIXME";
 		}
-		[unfilteredString appendKey:@"month" withValueWithoutBraces:entryMonth];
+		//[unfilteredString appendKey:@"month" withValueWithoutBraces:entryMonth];
 		
 		
-		
+		/*
 		// language
 		if ([paper objectForKey:@"language"]) {
 			[unfilteredString appendKey:@"language" 
@@ -669,7 +667,7 @@
 			[unfilteredString appendKey:@"school" withValue:@"FIXME"];
 		if ([required containsObject:@"institution"])
 			[unfilteredString appendKey:@"institution" withValue:@"FIXME"];
-		
+		*/
 		
 		
 		
@@ -683,7 +681,7 @@
 		
 		
 		// add the other fields we don't have to filter
-		
+		/*
 		NSDate *importdate = [paper objectForKey:@"importedDate"];
 		if (importdate) {
 			[bibstring appendKey:@"date-added" 
@@ -753,19 +751,42 @@
 					   withValue:[NSString stringWithFormat:@"%d", 
 								  [[paper objectForKey:@"rating"] intValue]]];
 		}
-		
+		*/
 		
 		
 		
 		// finish record
-		[bibstring appendString:@"}\n\n"];
+		[bibstring appendString:@"}]\n\n"];
 
 		// update count (informs delegate already through updateStatus)
-		[self incrementExportedItemsWith: 1];
+		[self incrementExportedItemsWith:1];
 		
 	}
 	
-	//NSLog(@"%@", bibstring);
+	
+	
+	NSMutableString *comment = [[NSMutableString alloc] init];
+	[comment appendString:@"%% This BibTeX bibliography file in UTF-8 format was created using Papers.\n"];
+	[comment appendString:@"%% http://mekentosj.com/papers/\n"];
+	[comment appendString:@"\n"];
+	
+	
+	
+	NSString *bibstringIN = [NSString stringWithFormat:@"%@", bibstring];
+	PrettyPrint *pp = [[PrettyPrint alloc] init];
+	[pp setIndentBy:0];
+	[pp setOffset:40];
+	[pp setMargin:0];
+	NSString *bibstringOUT = [pp prettyPrintString:bibstringIN];
+	
+	
+	
+	NSString *line = @"1---------2---------3---------4---------5---------6---------7---------8---------";
+	NSString *margin = @"\n\n\n\n\n\n\n";
+	NSLog(@"\n%@\n%@\n%@\n%@\n%@\n%@\n%@\n%@\n%@\n", margin, line, bibstringIN, line, margin, line, bibstringOUT, line, margin);	
+	
+	
+	
 	
 	NSError *err = nil;	
 	[bibstring writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:&err];
