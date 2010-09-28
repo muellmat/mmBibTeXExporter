@@ -77,10 +77,10 @@
 	};
 	3992588411FAEB13008FC4F9 /* mmBibTeXExporter.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1388, 13617}}";
-			sepNavSelRange = "{20510, 10}";
-			sepNavVisRange = "{13882, 2374}";
-			sepNavWindowFrame = "{{352, 0}, {1010, 1178}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1100, 15759}}";
+			sepNavSelRange = "{26006, 0}";
+			sepNavVisRange = "{475, 1197}";
+			sepNavWindowFrame = "{{552, 0}, {1010, 1178}}";
 		};
 	};
 	39CCDA8012356BFA000345DD /* PrettyPrint.h */ = {

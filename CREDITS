@@ -1,0 +1,46 @@
+
+
+
+	mmBibTeXExporter v0.9
+
+
+
+License:
+
+	- Creative Commons Non-commercial Attribution license.
+	
+		http://creativecommons.org/licenses/by-nc/1.0/
+
+
+
+Used source code:
+
+	- Papers Plugin SDK
+	
+		Copyright (c) 2007-2010 mekentosj
+		
+		http://mekentosj.com/
+		http://mekentosj.com/papers/
+		http://www.mekentosj.com/papers/plugins/papers_sdk.dmg
+		
+		This project is based on the SDK's example code, see:
+		Papers SDK > Sample Exporters > BibTeX Exporter
+
+
+
+Thanks to:
+
+	- The whole Database Systems Chair of Uni Tübingen:
+		http://www-db.informatik.uni-tuebingen.de/team
+	
+	- mekentosj for this great application + SDK!
+
+
+
+Contact:
+
+	Matthias Müller <muellmat@informatik.uni-tuebingen.de>
+	
+	You found a bug? Got a great idea to improve the plugin? Drop me a mail!
+
+

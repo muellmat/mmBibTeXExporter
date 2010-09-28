@@ -12,6 +12,9 @@
 		3992588611FAEB13008FC4F9 /* mmBibTeXExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3992588411FAEB13008FC4F9 /* mmBibTeXExporter.m */; };
 		39CCDA8212356BFA000345DD /* PrettyPrint.h in Headers */ = {isa = PBXBuildFile; fileRef = 39CCDA8012356BFA000345DD /* PrettyPrint.h */; };
 		39CCDA8312356BFA000345DD /* PrettyPrint.m in Sources */ = {isa = PBXBuildFile; fileRef = 39CCDA8112356BFA000345DD /* PrettyPrint.m */; };
+		39D367941251E6B600F3573D /* CREDITS in Resources */ = {isa = PBXBuildFile; fileRef = 39D367911251E6B600F3573D /* CREDITS */; };
+		39D367951251E6B600F3573D /* README in Resources */ = {isa = PBXBuildFile; fileRef = 39D367921251E6B600F3573D /* README */; };
+		39D367961251E6B600F3573D /* TODO in Resources */ = {isa = PBXBuildFile; fileRef = 39D367931251E6B600F3573D /* TODO */; };
 		849786DF05FB68B20030260A /* Panel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 849786DE05FB68B20030260A /* Panel.nib */; };
 		849786E505FB6AE70030260A /* exporter.icns in Resources */ = {isa = PBXBuildFile; fileRef = 849786E405FB6AE70030260A /* exporter.icns */; };
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
@@ -39,6 +42,9 @@
 		39CA856E11FAEF7500308150 /* BibTeXExporter++.exporter */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BibTeXExporter++.exporter"; sourceTree = BUILT_PRODUCTS_DIR; };
 		39CCDA8012356BFA000345DD /* PrettyPrint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrettyPrint.h; sourceTree = "<group>"; };
 		39CCDA8112356BFA000345DD /* PrettyPrint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrettyPrint.m; sourceTree = "<group>"; };
+		39D367911251E6B600F3573D /* CREDITS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CREDITS; sourceTree = "<group>"; };
+		39D367921251E6B600F3573D /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		39D367931251E6B600F3573D /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		849786DE05FB68B20030260A /* Panel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = Panel.nib; sourceTree = "<group>"; };
 		849786E405FB6AE70030260A /* exporter.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = exporter.icns; sourceTree = "<group>"; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -90,6 +96,9 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				39D367911251E6B600F3573D /* CREDITS */,
+				39D367921251E6B600F3573D /* README */,
+				39D367931251E6B600F3573D /* TODO */,
 				396EC7A012076BA200DE068E /* bibtex-format.sh */,
 				A6C5CF820D114ED300542EB3 /* Localizable.strings */,
 				A68CC5720C09DF4A006E1639 /* CharacterConversion.plist */,
@@ -222,6 +231,9 @@
 				A68CC5730C09DF4A006E1639 /* CharacterConversion.plist in Resources */,
 				A6C5CF830D114ED300542EB3 /* Localizable.strings in Resources */,
 				396EC7A112076BA200DE068E /* bibtex-format.sh in Resources */,
+				39D367941251E6B600F3573D /* CREDITS in Resources */,
+				39D367951251E6B600F3573D /* README in Resources */,
+				39D367961251E6B600F3573D /* TODO in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

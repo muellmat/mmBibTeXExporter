@@ -1,0 +1,17 @@
+mmBibTeXExporter is a BibTeX-Exporter-Plugin for Papers.
+
+      Papers:     http://mekentosj.com/papers/
+	  Papers SDK: http://www.mekentosj.com/papers/plugins/papers_sdk.dmg
+
+This project is based on the SDK's example code, see:
+Papers SDK > Sample Exporters > BibTeX Exporter
+
+
+
+Installation:
+
+$ git clone git://github.com/muellmat/mmBibTeXExporter.git
+$ cd mmBibTeXExporter.git
+$ xcodebuild -configuration 'Development + Install'
+
+Now (re)start Papers...
