@@ -38,13 +38,13 @@
 
 @implementation NSMutableString (Bibstring)
 -(void)appendKey:(NSString*)key withValueWithoutBraces:(NSString*)value {
-	[self appendFormat:@" [%@ [= [%@,]]]\n", key, value];
+	[self appendFormat:@" %@ = %@,\n", key, value];
 }
 -(void)appendKey:(NSString*)key withValue:(NSString*)value {
 	if ([value isDecimalDigitOnly]) {
 		[self appendKey:key withValueWithoutBraces:value];
 	} else {
-		[self appendFormat:@" [%@ [= [{%@},]]]\n", key, value];
+		[self appendFormat:@" %@ = {%@},\n", key, value];
 	}
 }
 @end
@@ -418,7 +418,7 @@
 			[keys addObject: citeKey];
 		}
 
-		[bibstring appendFormat:@"[@%@{%@,\n", citeType, citeKey];
+		[bibstring appendFormat:@"@%@{%@,\n", citeType, citeKey];
 		
 		
 		
@@ -755,7 +755,7 @@
 		
 		
 		// finish record
-		[bibstring appendString:@"}]\n\n"];
+		[bibstring appendString:@"}\n\n"];
 
 		// update count (informs delegate already through updateStatus)
 		[self incrementExportedItemsWith:1];
@@ -771,6 +771,7 @@
 	
 	
 	
+	/*
 	NSString *bibstringIN = [NSString stringWithFormat:@"%@", bibstring];
 	PrettyPrint *pp = [[PrettyPrint alloc] init];
 	[pp setIndentBy:4];
@@ -778,12 +779,7 @@
 	[pp setMargin:80];
 	NSString *bibstringOUT = [pp prettyPrintString:bibstringIN];
 	
-	
-	
-	
-	
-	
-	/* test */
+	// test
 	
 	NSString *line = @"1---------2---------3---------4---------5---------6---------7---------8---------";
 	NSString *margin = @"\n\n\n\n\n\n\n";
@@ -791,11 +787,7 @@
 	
 	[bibstring appendString:@"\n\n\n\n\n"];
 	[bibstring appendString:bibstringOUT];
-	
-	
-	
-	
-	
+	*/
 	
 	
 	

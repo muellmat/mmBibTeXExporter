@@ -1,0 +1,155 @@
+// !$*UTF8*$!
+{
+	089C1669FE841209C02AAC07 /* Project object */ = {
+		activeBuildConfigurationName = "Development + Install";
+		activeTarget = 8D5B49AC048680CD000E48DA /* BibTeXExporter++ */;
+		addToTargets = (
+			8D5B49AC048680CD000E48DA /* BibTeXExporter++ */,
+		);
+		codeSenseManager = 39045DE011764836009C50B1 /* Code sense */;
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					238,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 307357122;
+			PBXWorkspaceStateSaveDate = 307357122;
+		};
+		sourceControlManager = 39045DDF11764836009C50B1 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	089C167EFE841241C02AAC07 /* English */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {812, 1090}}";
+			sepNavSelRange = "{258, 0}";
+			sepNavVisRange = "{0, 283}";
+			sepNavWindowFrame = "{{66, 11}, {832, 1162}}";
+		};
+	};
+	39045DDF11764836009C50B1 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	39045DE011764836009C50B1 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	396EC7A012076BA200DE068E /* bibtex-format.sh */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {831, 1106}}";
+			sepNavSelRange = "{712, 0}";
+			sepNavVisRange = "{0, 1060}";
+			sepNavWindowFrame = "{{1084, 0}, {890, 1178}}";
+		};
+	};
+	3992588311FAEB13008FC4F9 /* mmBibTeXExporter.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {661, 1106}}";
+			sepNavSelRange = "{1169, 0}";
+			sepNavVisRange = "{0, 1176}";
+			sepNavWindowFrame = "{{61, 0}, {720, 1178}}";
+		};
+	};
+	3992588411FAEB13008FC4F9 /* mmBibTeXExporter.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1388, 13617}}";
+			sepNavSelRange = "{20510, 10}";
+			sepNavVisRange = "{13882, 2374}";
+			sepNavWindowFrame = "{{352, 0}, {1010, 1178}}";
+		};
+	};
+	39CCDA8012356BFA000345DD /* PrettyPrint.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {809, 1106}}";
+			sepNavSelRange = "{277, 0}";
+			sepNavVisRange = "{0, 794}";
+			sepNavWindowFrame = "{{884, 0}, {868, 1178}}";
+		};
+	};
+	39CCDA8112356BFA000345DD /* PrettyPrint.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {924, 3570}}";
+			sepNavSelRange = "{4533, 0}";
+			sepNavVisRange = "{348, 1293}";
+			sepNavWindowFrame = "{{427, 0}, {868, 1178}}";
+		};
+	};
+	8D5B49AC048680CD000E48DA /* BibTeXExporter++ */ = {
+		activeExec = 0;
+	};
+	8D5B49B7048680CD000E48DA /* Info.plist */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{66, 11}, {832, 1162}}";
+		};
+	};
+	A65E517F0B7522B5001242EE /* bibtex_characters.plist */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{66, 11}, {832, 1162}}";
+		};
+	};
+	A65E51D10B7526F6001242EE /* NSString-Utilities.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {773, 1090}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 581}";
+			sepNavWindowFrame = "{{66, 11}, {832, 1162}}";
+		};
+	};
+	A65E51D20B7526F6001242EE /* NSString-Utilities.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1260, 2329}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{2708, 1879}";
+			sepNavWindowFrame = "{{66, 11}, {832, 1162}}";
+		};
+	};
+	A68CC56E0C09DF42006E1639 /* BDSKConverter.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {836, 1700}}";
+			sepNavSelRange = "{2928, 57}";
+			sepNavVisRange = "{1652, 1861}";
+			sepNavWindowFrame = "{{66, 11}, {832, 1162}}";
+		};
+	};
+	A68CC56F0C09DF42006E1639 /* BDSKConverter.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1380, 7497}}";
+			sepNavSelRange = "{17920, 90}";
+			sepNavVisRange = "{17759, 467}";
+			sepNavWindowFrame = "{{66, 11}, {832, 1162}}";
+		};
+	};
+	A6C5CF7E0D114EC500542EB3 /* English */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {972, 1090}}";
+			sepNavSelRange = "{82, 0}";
+			sepNavVisRange = "{0, 611}";
+			sepNavWindowFrame = "{{66, 11}, {832, 1162}}";
+		};
+	};
+}
